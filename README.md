@@ -60,31 +60,57 @@ For guild-specific command registration during testing, set `GUILD_ID`. If `GUIL
 
 ## Environment variables
 
-Create a private `.env` file in the project root. Do not commit it.
+Create a private `.env` file in the project root. Never commit it to GitHub.
 
 | Variable | Required | Description |
 |---|---|---|
 | `DISCORD_TOKEN` | Yes | Bot token from the Discord Developer Portal. |
 | `CLIENT_ID` | Yes | Discord application ID. |
-| `GUILD_ID` | Recommended for testing | Server ID for guild-specific slash-command registration. Leave out or empty for global registration. |
-| `ADMIN_ROLE_ID` | Yes | Role ID authorized to use administrative commands. The current default in `.env.example` is `1119971731935862854`. |
-| `CURRENCY_NAME` | No | Currency label shown in bot responses. Use `N7X Points`. |
-| `TOP_LIMIT` | No | Default number of entries for `/top`; the command supports up to 10. |
-| `LOG_CHANNEL_ID` | No | Text channel ID used for slash-command activity logs. |
-| `BOT_COMMANDS_CHANNEL_ID` | No | Channel where `/top`, `/leaderboard_position`, and `/my_balance` can be used. If omitted, the current default is `1558332206114406400`. |
-| `CONVERT_PANEL_CHANNEL_ID` | No | Channel where the conversion panel is posted. If omitted, the current default is `1558349020991193198`. |
-| `GOOGLE_SERVICE_ACCOUNT_JSON` | Required for Google Sheets export | Path to the Google service-account JSON key file, for example `./google-service-account.json`. |
+| `GUILD_ID` | Recommended | Discord server ID for guild-specific slash-command registration. |
+| `ADMIN_ROLE_ID` | Yes | Role ID authorized to use administrative commands. |
+| `CURRENCY_NAME` | No | Currency label displayed by the bot. Set to `N7X Points`. |
+| `TOP_LIMIT` | No | Default number of leaderboard entries. |
+| `LOG_CHANNEL_ID` | No | Channel ID used for slash-command activity logs. |
+| `BOT_COMMANDS_CHANNEL_ID` | No | Channel ID where member balance and leaderboard commands are available. |
+| `CONVERT_PANEL_CHANNEL_ID` | No | Channel ID where the Engage Points conversion panel is posted. |
+| `GOOGLE_SERVICE_ACCOUNT_JSON` | Yes for Google Sheets export | Path to the Google service-account JSON key file. |
+| `N7X_SPREADSHEET_ID` | Yes for Google Sheets export | ID of the dedicated N7X-Assistant Google Spreadsheet used by `/export_data_csv`. |
 
 ### Google Sheets setup
 
-1. Enable the **Google Sheets API** in the Google Cloud project used by the service account.
-2. Put the service-account JSON key in the project directory, or set `GOOGLE_SERVICE_ACCOUNT_JSON` to its path.
-3. Share the destination spreadsheet with the service-account email and grant **Editor** access.
-4. Keep the service-account JSON key private; never commit it to GitHub.
+1. Enable the Google Sheets API in your Google Cloud project.
+2. Configure `GOOGLE_SERVICE_ACCOUNT_JSON` with the path to your service-account JSON key file.
+3. Create a dedicated Google Spreadsheet for N7X-Assistant.
+4. Share the spreadsheet with the service-account email and grant **Editor** access.
+5. Set `N7X_SPREADSHEET_ID` to the ID of that spreadsheet.
+6. Ensure `commands/export_data_csv.js` reads the destination using `process.env.N7X_SPREADSHEET_ID`.
 
-**Important:** In the current source version, `commands/export_data_csv.js` contains a spreadsheet ID directly in the code. Verify and change that ID to the intended N7X spreadsheet before running `/export_data_csv`. Do not point it at the Incentiv-Assistant spreadsheet unless that is explicitly intended. The source should be changed to read a dedicated environment variable such as `N7X_SPREADSHEET_ID` before this variable is documented as active configuration.
+Example spreadsheet URL:
 
-`/upload_csv` is a separate import function. It accepts a CSV attachment or a Google Sheets URL that is accessible to the bot's importer. Keep the source spreadsheet separate from the N7X export destination when the datasets must remain isolated.
+`https://docs.google.com/spreadsheets/d/YOUR_SPREADSHEET_ID/edit`
+
+The spreadsheet ID is the value between `/d/` and `/edit`.
+
+### Example `.env`
+
+```env
+DISCORD_TOKEN=YOUR_DISCORD_BOT_TOKEN
+CLIENT_ID=YOUR_DISCORD_APPLICATION_ID
+GUILD_ID=YOUR_DISCORD_SERVER_ID
+
+ADMIN_ROLE_ID=YOUR_ADMIN_ROLE_ID
+CURRENCY_NAME=N7X Points
+TOP_LIMIT=10
+
+LOG_CHANNEL_ID=YOUR_LOG_CHANNEL_ID
+BOT_COMMANDS_CHANNEL_ID=YOUR_COMMANDS_CHANNEL_ID
+CONVERT_PANEL_CHANNEL_ID=YOUR_CONVERSION_PANEL_CHANNEL_ID
+
+GOOGLE_SERVICE_ACCOUNT_JSON=./google-service-account.json
+N7X_SPREADSHEET_ID=YOUR_N7X_SPREADSHEET_ID
+```
+
+**Important:** Keep the N7X spreadsheet separate from the Incentiv-Assistant spreadsheet to prevent data from being mixed. Never upload `.env` or `google-service-account.json` to GitHub.
 
 ## Commands
 
