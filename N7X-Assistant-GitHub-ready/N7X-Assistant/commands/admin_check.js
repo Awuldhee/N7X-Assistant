@@ -1,0 +1,4 @@
+const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
+const { getBalance, getRank } = require("../database/database");
+const { requireAdmin, currencyName } = require("../utils/permissions");
+module.exports={data:new SlashCommandBuilder().setName("admin_check").setDescription("Admin: check any user's balance and rank").addUserOption(o=>o.setName("user").setDescription("User to check").setRequired(true)),async execute(i){requireAdmin(i);const user=i.options.getUser("user",true);const balance=getBalance(i.guildId,user.id);const rank=getRank(i.guildId,user.id);await i.reply({embeds:[new EmbedBuilder().setColor(0x5865f2).setTitle("Admin Balance Check").setThumbnail(user.displayAvatarURL({size:256})).setDescription(`Account: ${user}`).addFields({name:"Balance",value:`${balance.toLocaleString()} ${currencyName()}`,inline:true},{name:"Rank",value:`#${rank}`,inline:true}).setFooter({text:`Checked by ${i.user.tag}`}).setTimestamp()]});}};
