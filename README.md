@@ -114,11 +114,13 @@ Administrative commands are restricted to members with the configured `ADMIN_ROL
 | `/export_data_csv` | None | Exports balances for the current server to the spreadsheet ID configured in `commands/export_data_csv.js`. |
 | `/assign_roles_from_thread_authors` | `thread_id`, `role` | Scans a thread's messages and assigns the selected role to members who posted there. Produces a CSV summary attachment. |
 
-### Marketplace role conversion
+## Engage Points Conversion
 
-The conversion button panel is posted automatically to the channel configured by `CONVERT_PANEL_CHANNEL_ID`. Members can use the button or `/convert` to convert supported roles:
+N7X-Assistant allows members to convert their **Engage Points into Engage X Points** through the conversion panel provided in the Discord server.
 
-| Role name | Points credited |
+The conversion panel is automatically posted in the channel configured by `CONVERT_PANEL_CHANNEL_ID`. Members only need to click the available panel button to start the conversion process.
+
+| Supported Role | Points Credited |
 |---|---:|
 | `N7X Points 3` | 3 |
 | `N7X Points 15` | 15 |
@@ -126,7 +128,9 @@ The conversion button panel is posted automatically to the channel configured by
 | `N7X Points 75` | 75 |
 | `N7X Points 150` | 150 |
 
-Only supported roles held by the member are converted. The bot removes the converted roles and credits the total points. Members should verify the role list before confirming because conversion is final.
+The bot checks the member's eligible roles, converts the corresponding values into N7X Points, and removes the converted roles after successful processing.
+
+**Important:** Members do not need to run any slash command. All conversions are initiated through the available panel.
 
 ## CSV import format
 
