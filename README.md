@@ -110,8 +110,6 @@ GOOGLE_SERVICE_ACCOUNT_JSON=./google-service-account.json
 N7X_SPREADSHEET_ID=YOUR_N7X_SPREADSHEET_ID
 ```
 
-**Important:** Keep the N7X spreadsheet separate from the Incentiv-Assistant spreadsheet to prevent data from being mixed. Never upload `.env` or `google-service-account.json` to GitHub.
-
 ## Commands
 
 ### Member commands
